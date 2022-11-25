@@ -1,4 +1,4 @@
-import psycopg2 as pg
+import db
 class usuario:
     def conexao(self):
         # Conectar ao banco de dados. 
