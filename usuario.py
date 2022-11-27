@@ -1,9 +1,9 @@
-class usuario:
+class Usuario:
     def __init__(self):
-        import db
+        import psycopg2 as pg
+        self.conexao = pg.connect(host='127.0.0.1', database='postgres', user='postgres', password='1234')
+        self.cursor=self.conexao.cursor()
     def instalaBanco(self):
-        print ("oi")
-        self.conexao()
         # CRIAR TABELA USUARIO
         try:     
             criarTabela = 'CREATE TABLE usuario (id SERIAL PRIMARY KEY, login VARCHAR (20) NOT NULL, senha varchar (20) NOT NULL)'

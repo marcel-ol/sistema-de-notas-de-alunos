@@ -1,6 +1,6 @@
-from usuario import usuario
-usuario()
-usuario.instalaBanco(usuario)
+from usuario import Usuario
+usuario = Usuario()
+usuario.instalaBanco()
 
 exit()
 
