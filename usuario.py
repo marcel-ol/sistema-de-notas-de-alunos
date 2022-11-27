@@ -26,7 +26,7 @@ class Usuario:
 
         # CRIAR TABELA LOG
         try:     
-            criarTabela = 'CREATE TABLE log (id SERIAL PRIMARY KEY , matricula INT NOT NULL , login VARCHAR (20) NOT NULL, dataHora NOT NULL DEFAULT NOW(), motivo varchar (144) )'
+            criarTabela = 'CREATE TABLE log (id SERIAL PRIMARY KEY , matricula INT NOT NULL , login VARCHAR (20) NOT NULL, dataHora TIMESTAMP NOT NULL DEFAULT NOW(), motivo varchar (144) )'
             self.cursor.execute (criarTabela)
             self.conexao.commit()
             print("Tabela LOG inserida.")
