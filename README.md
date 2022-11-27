@@ -5,3 +5,5 @@ Linguagem utilizada: Python
 Banco de dados: PostGreSQL
 Alunos: LUiz Gabriel
         Marcel de Oliveira
+
+Atualização: 27/11/2022
