@@ -22,7 +22,7 @@ class Usuario:
 
         # CRIAR TABELA ALUNO
         try:     
-            criarTabela = 'CREATE TABLE aluno (matricula INT PRIMARY KEY , nome varchar (100) , av1 NUMERIC(4,2) , av2 NUMERIC(4,2) , av3 NUMERIC(4,2) , av4 NUMERIC(4,2))'
+            criarTabela = 'CREATE TABLE aluno (matricula BIGINT PRIMARY KEY , nome varchar (100) , av1 NUMERIC(4,2) , av2 NUMERIC(4,2) , av3 NUMERIC(4,2) , av4 NUMERIC(4,2))'
             self.cursor.execute (criarTabela)
             self.conexao.commit()
             print("Tabela ALUNO inserida.")
@@ -32,7 +32,7 @@ class Usuario:
 
         # CRIAR TABELA LOG
         try:     
-            criarTabela = 'CREATE TABLE log (id SERIAL PRIMARY KEY , matricula INT NOT NULL , login VARCHAR (20) NOT NULL, dataHora TIMESTAMP NOT NULL DEFAULT NOW(), motivo varchar (144) )'
+            criarTabela = 'CREATE TABLE log (id SERIAL PRIMARY KEY , matricula BIGINT NOT NULL , login VARCHAR (20) NOT NULL, dataHora TIMESTAMP NOT NULL DEFAULT NOW(), motivo varchar (144) )'
             self.cursor.execute (criarTabela)
             self.conexao.commit()
             print("Tabela LOG inserida.")
@@ -51,7 +51,7 @@ class Usuario:
     def loginUsuario(self,login,senha):
         self.conexao()
         try:
-            buscarUsuario = 'SELECT id from usuario where login = %s and senha = %s LIMIT 1)'
+            buscarUsuario = "SELECT id from usuario where login = %s and senha = %s LIMIT 1)"
             self.cursor.execute (buscarUsuario,(login,senha))
             resultado = self.cursor.fetchall()
             print ("Login realizado. Usuário %s , ID %i") % (login,resultado)
