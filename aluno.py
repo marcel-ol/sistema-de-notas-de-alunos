@@ -27,8 +27,17 @@ class Aluno:
 
         if escolha == "1":
             matricula = input("Qual a matricula do aluno:")
+            buscaNota = "SELECT matricula,nome,av1,av2,av3,av4 FROM aluno WHERE matricula = " +matricula+ " limit 1"
+            self.cursor.execute (buscaNota) #,matricula)
+            resultado = self.cursor.fetchone()
+            print (resultado)
+
         elif escolha == "2":
-              nome = input("Qual o nome do aluno:")  
+            nome = input("Qual o nome do aluno:")
+            buscaNota = "SELECT matricula,nome,av1,av2,av3,av4 FROM aluno WHERE nome LIKE '%" +nome+ "%' limit 1"
+            self.cursor.execute (buscaNota) #,matricula)
+            resultado = self.cursor.fetchone()
+            print (resultado)
         else:
             print("Escolha um opção valida")
 
