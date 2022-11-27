@@ -10,9 +10,15 @@ class Usuario:
             self.cursor.execute (criarTabela)
             self.conexao.commit()
             print("Tabela USUARIO inserida.")
+            #cria um novo usuario padrao
+            novolog= "INSERT INTO usuario (login,senha) VALUES ('admin','1234')"
+            self.cursor.execute (novolog)
+            self.conexao.commit()
+            print("Novo usuario incluido com sucesso!")
         except Exception as e:
             print ("Tabela USUARIO já criada. Exceção: %s" % (e))
             self.conexao.rollback()
+
 
         # CRIAR TABELA ALUNO
         try:     

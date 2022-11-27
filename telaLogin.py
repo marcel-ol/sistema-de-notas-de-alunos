@@ -2,6 +2,8 @@ from usuario import Usuario
 usuario = Usuario()
 usuario.instalaBanco()
 
+
+
 exit()
 
 
