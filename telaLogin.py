@@ -1,5 +1,12 @@
 from usuario import usuario
+usuario()
 usuario.instalaBanco(usuario)
+
+exit()
+
+
+
+
 print("Sistema de notas")
 print("=================================")
 print("1: Incluir novo usuário")

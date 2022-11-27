@@ -1,6 +1,8 @@
-import db
 class usuario:
+    def __init__(self):
+        import db
     def instalaBanco(self):
+        print ("oi")
         self.conexao()
         # CRIAR TABELA USUARIO
         try:     
@@ -52,4 +54,3 @@ class usuario:
             print ("Usuário não encontrado. Exceção: %s" % (e))
             self.conexao.rollback()
             return None
-print ("usuario.py carregado")
