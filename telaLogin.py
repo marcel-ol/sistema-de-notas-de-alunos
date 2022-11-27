@@ -17,7 +17,7 @@ elif opcao == "2":
     print("opcao 2")
     login = input("Digite o login: ")
     senha = input("Digite o senha: ")
-    # usuario.loginUsuario(login,senha)
+    idUsuario = usuario.loginUsuario(login,senha)
 else:
     print ("Seu ridículo! Escolha uma das opções disponíveis. Saindo...")
     exit()
