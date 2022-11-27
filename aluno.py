@@ -5,12 +5,37 @@ class Aluno:
     cursor=conexao.cursor()
 
     def __init__(self):
-        print ("ola")
-        self.novaNota()
+        print ("Controle de Aluno")
+        print("=================================")
+        print("1: Buscar Aluno")
+        print("2: Incluir novo aluno")
+        print("3: Alterar Aluno")
+        escolha = input("Escolha uma opção:")
+        if escolha == "1":
+            self.buscarAluno()
+        elif escolha == "2":
+            self.incluirAluno()
+        #self.incluirAluno()
 
-    def novaNota(self):
+    def buscarAluno(self):
         login = "admin"
-        print("Cadastro de notas")
+        print("\tBuscar Aluno")
+        print("=================================")
+        print("1: Buscar aluno pela matricula")
+        print("2: Buscar aluno pelo nome")
+        escolha = input("Escolha uma opção:")
+
+        if escolha == "1":
+            matricula = input("Qual a matricula do aluno:")
+        elif escolha == "2":
+              nome = input("Qual o nome do aluno:")  
+        else:
+            print("Escolha um opção valida")
+
+    def incluirAluno(self):
+        login = "admin"
+        print("\n\n")
+        print("\tInserir novo aluno")
         print("=================================")
         print("Digite abaixo com atenção as notas do aluno")
         matricula = input("Matricula do aluno?")
