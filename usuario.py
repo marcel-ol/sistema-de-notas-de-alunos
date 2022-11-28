@@ -45,12 +45,14 @@ class Usuario:
             cadastrarUsuario = 'INSERT INTO usuario (login,senha) VALUES (%s,%s)'
             self.cursor.execute (cadastrarUsuario,(login,senha))
             self.conexao.commit()
+            return -1
         except Exception as e:
             print ("Erro. Exceção: %s" % (e))
             self.conexao.rollback()
+            return 0
     def loginUsuario(self,login,senha):
         try:
-            buscarUsuario = 'SELECT id from usuario where login = %s and senha = %s LIMIT 1)'
+            buscarUsuario = 'SELECT id from usuario where login = %s and senha = %s LIMIT 1'
             self.cursor.execute (buscarUsuario,(login,senha))
             resultado = self.cursor.fetchone()
             if(resultado == None):
@@ -59,5 +61,5 @@ class Usuario:
                 print ("Login realizado. Bem vindo(a), ",login)
                 return resultado[0]
         except Exception as e:
-            print ("Exceção: %s" % (e))
-            exit()
+            e = "Exceção: ," + str(e)
+            return 0
