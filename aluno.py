@@ -3,29 +3,16 @@ class Aluno:
         import psycopg2 as pg
         self.conexao = pg.connect(host='127.0.0.1', database='postgres', user='postgres', password='1234')
         self.cursor=self.conexao.cursor()
-        # print ("Controle de Aluno")
-        # print("=================================")
-        # print("1: Buscar Aluno")
-        # print("2: Incluir novo aluno")
-        # print("3: Alterar Aluno")
-        # escolha = input("Escolha uma opção:")
-        # if escolha == "1":
-        #     self.buscarAluno()
-        # elif escolha == "2":
-        #     self.incluirAluno()
-        #self.incluirAluno()
 
     def buscarAluno(self,escolha,termo):
-        if escolha == 1:
-            # matricula = input("Qual a matricula do aluno:")
+        if escolha == 1: #busca por matricula
             buscaNota = "SELECT matricula,nome,av1,av2,av3,av4 FROM aluno WHERE matricula = " +termo+ " limit 1"
-            self.cursor.execute (buscaNota) #,matricula)
+            self.cursor.execute (buscaNota)
             resultado = self.cursor.fetchone()
 
-        elif escolha == 2:
-            # nome = input("Qual o nome do aluno:")
+        elif escolha == 2: #busca por nome
             buscaNota = "SELECT matricula,nome,av1,av2,av3,av4 FROM aluno WHERE nome LIKE '%" +termo+ "%' limit 1"
-            self.cursor.execute (buscaNota) #,matricula)
+            self.cursor.execute (buscaNota)
             resultado = self.cursor.fetchone()
         print (resultado)
         return resultado
@@ -52,6 +39,30 @@ class Aluno:
                 return -1
             else: return 2
         except Exception as e:
-            print ("Erro encontrado. Exceção: %s" % (e))
+            print ("Erro na gravação do log. Exceção: %s" % (e))
+            self.conexao.rollback()
+            return 3
+
+    def alterarAluno(self,idUsuario,nome,matricula,av1,av2,av3,av4,motivo):
+        try:
+            atualizaNota = "UPDADE aluno SET av1 = %s, av2 = %s, av3 = %s, av4 = %s WHERE matricula = %s)"
+            self.cursor.execute (atualizaNota,(av1,av2,av3,av4,matricula))
+            self.conexao.commit()
+            print(f"Nota(s) do aluno {nome} alterada(s).")
+        except Exception as e:
+            print ("Erro na alteração. Exceção: %s" % (e))
+            self.conexao.rollback()
+            return 1
+
+        try:
+            novolog= "INSERT INTO log (matricula,login,motivo) VALUES (%s,%s,%s)"
+            self.cursor.execute (novolog,(matricula,idUsuario,motivo))
+            self.conexao.commit()
+            print("Ação gravada no Log.")
+            if(motivo != None):
+                return -1
+            else: return 2
+        except Exception as e:
+            print ("Erro na gravação do log. Exceção: %s" % (e))
             self.conexao.rollback()
             return 3
