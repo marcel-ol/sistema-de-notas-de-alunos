@@ -12,6 +12,8 @@ class Principal (tk.Frame):
         self.radioMatricula = tk.Radiobutton()
         self.radioNome = tk.Radiobutton()
         self.campoTermo = tk.Entry()
+        self.labelMotivo = tk.Label()
+        self.campoMotivo = tk.Entry()
         self.escolha = tk.IntVar()
 
     def telaLogin(self):
@@ -22,12 +24,9 @@ class Principal (tk.Frame):
         self.botaoEfetuarLogin.grid(row=1,column=0,ipadx=20,ipady=20,padx=10,pady=10)
         self.botaoCriarLogin = tk.Button(self.master,text="Criar Usuário",font="Arial 14",command = lambda: self.iniciaCriarUsuario())
         self.botaoCriarLogin.grid(row=2,column=0,ipadx=20,ipady=20,padx=10,pady=10)
-        # self.botaoVoltar = tk.Button(self.master,text="Sair",bg="red",fg="white",font="Arial 14 bold",command = lambda: self.limparTelaLogin('botaoCriarLogin'))
-        # self.botaoVoltar.grid(row=5,column=0,ipadx=20,ipady=20,padx=10,pady=20)
         self.botaoSair = tk.Button(self.master,text="Sair",bg="red",fg="white",font="Arial 14 bold",command=self.sair)
-        self.botaoSair.grid(row=3,column=0,ipadx=20,ipady=20,padx=10,pady=20)
+        self.botaoSair.grid(row=4,column=0,ipadx=20,ipady=20,padx=10,pady=20)
         
-    
     def telaMenu(self):
         self.labelMenu = tk.Label(self.master,text="Menu",font="Arial 18")
         self.labelMenu.grid(row=0,column=0,ipadx=20,ipady=20,padx=10,pady=10)
@@ -35,6 +34,8 @@ class Principal (tk.Frame):
         self.botaoIncluir.grid(row=1,column=0,ipadx=20,ipady=20,padx=10,pady=10)
         self.botaoBuscar = tk.Button(self.master,text="Buscar",font="Arial 14",command=self.telaBuscarAluno)
         self.botaoBuscar.grid(row=2,column=0,ipadx=20,ipady=20,padx=10,pady=10)
+        self.botaoListar = tk.Button(self.master,text="Listar",font="Arial 14",command=self.telaListarAluno)
+        self.botaoListar.grid(row=3,column=0,ipadx=20,ipady=20,padx=10,pady=10)
         self.botaoSair = tk.Button(self.master,text="Sair",bg="red",fg="white",font="Arial 14 bold",command=self.sair)
         self.botaoSair.grid(row=4,column=0,ipadx=20,ipady=20,padx=10,pady=20)
 
@@ -135,11 +136,12 @@ class Principal (tk.Frame):
         print("telaIncluirAluno")
         self.botaoIncluir["state"] = "disabled"
         self.botaoBuscar["state"] = "disabled"
+        self.botaoListar["state"] = "disabled"
         self.telaAluno()
         self.labelTituloSecao = tk.Label(self.master,text="Incluir aluno",font="Arial 18")
         self.labelTituloSecao.grid(row=0,column=1,padx=5,pady=5)
-        self.botaoGravar = tk.Button(self.master,text="Gravar",bg="green",fg="white",font="Arial 14",command=self.executaIncluirAluno)
-        self.botaoGravar.grid(row=7,column=1,ipadx=2,ipady=2,padx=10,pady=10)
+        self.botaoGravarBuscar = tk.Button(self.master,text="Gravar",bg="green",fg="white",font="Arial 14",command=self.executaIncluirAluno)
+        self.botaoGravarBuscar.grid(row=7,column=1,ipadx=2,ipady=2,padx=10,pady=10)
         self.botaoVoltar = tk.Button(self.master,text="Voltar",font="Arial 14 bold",command=self.executaDesfazTelaAluno)
         self.botaoVoltar.grid(row=7,column=2,ipadx=2,ipady=2,padx=10,pady=20)
 
@@ -162,6 +164,7 @@ class Principal (tk.Frame):
         print("telaBuscarAluno")
         self.botaoIncluir["state"] = "disabled"
         self.botaoBuscar["state"] = "disabled"
+        self.botaoListar["state"] = "disabled"
         self.labelTituloSecao = tk.Label(self.master,text="Buscar aluno",font="Arial 18")
         self.labelTituloSecao.grid(row=0,column=1,padx=5,pady=5)
         self.labelEscolha = tk.Label(self.master,text="Como desejar buscar?",font="Arial 14")
@@ -173,60 +176,71 @@ class Principal (tk.Frame):
         self.escolha.set(1)
         self.campoTermo = tk.Entry(self.master,width=20)
         self.campoTermo.grid(row=4,column=1)
-        self.botaoBuscar = tk.Button(self.master,text="Buscar",font="Arial 14",command=self.executaBuscarAluno)
-        self.botaoBuscar.grid(row=7,column=1,ipadx=2,ipady=2,padx=10,pady=10)
+        self.botaoGravarBuscar = tk.Button(self.master,text="Buscar",font="Arial 14",command=self.executaBuscarAluno)
+        self.botaoGravarBuscar.grid(row=7,column=1,ipadx=2,ipady=2,padx=10,pady=10)
 
     def executaBuscarAluno(self):
         print("executaBuscarAluno")
         self.termo = self.campoTermo.get()
-        print("termo a buscar: ",self.campoTermo.get())
-        print("opção: ",self.escolha.get())
-        self.retornoAluno = aluno.buscarAluno(self.escolha.get(),self.termo)    
-        print(self.retornoAluno)
-        if(self.retornoAluno != None):
-            self.labelEscolha.destroy()
-            self.radioMatricula.destroy()
-            self.radioNome.destroy()
-            self.campoTermo.destroy()
-            self.botaoBuscar.destroy()
-            self.labelTituloSecao.config(text = 'Consultar e Alterar aluno')
-            self.telaAluno()
-            self.campoMatricula.delete(0, 'end')
-            self.campoMatricula.insert(0,str(self.retornoAluno[0]))
-            self.campoMatricula.config(state= "disabled")
-            self.campoNome.delete(0, 'end')
-            self.campoNome.insert(0,str(self.retornoAluno[1]))
-            self.campoNome.config(state= "disabled")
-            self.campoAV1.delete(0, 'end')
-            self.campoAV1.insert(0,str(self.retornoAluno[2]))
-            self.campoAV2.delete(0, 'end')
-            self.campoAV2.insert(0,str(self.retornoAluno[3]))
-            self.campoAV3.delete(0, 'end')
-            self.campoAV3.insert(0,str(self.retornoAluno[4]))
-            self.campoAV4.delete(0, 'end')
-            self.campoAV4.insert(0,str(self.retornoAluno[5]))
-            self.labelMotivo = tk.Label(self.master,text="Motivo da alteração: ",fg="red",font="Arial 12")
-            self.labelMotivo.grid(row=8,column=1)
-            self.campoMotivo = tk.Entry(self.master,width=20)
-            self.campoMotivo.grid(row=8,column=2)
-            self.botaoGravar = tk.Button(self.master,text="Gravar",bg="green",fg="white",font="Arial 14",command=self.executaAlterarAluno)
-            self.botaoGravar.grid(row=9,column=1,ipadx=2,ipady=2,padx=10,pady=10)
-            self.botaoVoltar = tk.Button(self.master,text="Voltar",font="Arial 14 bold",command=self.executaDesfazTelaAluno)
-            self.botaoVoltar.grid(row=9,column=2,ipadx=2,ipady=2,padx=10,pady=20)
+        if(len(self.termo) == 0):
+            tk.messagebox.showerror(title="Erro", message="Digite algum termo para buscar.")
         else:
-            tk.messagebox.showerror(title="Erro", message="Aluno não encontrado. Refaça sua busca.")
+            self.retornoAluno = aluno.buscarAluno(int(self.escolha.get()),str(self.termo))
+            if(self.retornoAluno != None):
+                self.labelEscolha.destroy()
+                self.radioMatricula.destroy()
+                self.radioNome.destroy()
+                self.campoTermo.destroy()
+                self.botaoGravarBuscar.destroy()
+                self.labelTituloSecao.config(text = 'Consultar e Alterar aluno')
+                self.telaAluno()
+                self.campoMatricula.delete(0, 'end')
+                self.campoMatricula.insert(0,str(self.retornoAluno[0]))
+                self.campoMatricula.config(state= "disabled")
+                self.campoNome.delete(0, 'end')
+                self.campoNome.insert(0,str(self.retornoAluno[1]))
+                self.campoNome.config(state= "disabled")
+                self.campoAV1.delete(0, 'end')
+                self.campoAV1.insert(0,str(self.retornoAluno[2]))
+                self.campoAV2.delete(0, 'end')
+                self.campoAV2.insert(0,str(self.retornoAluno[3]))
+                self.campoAV3.delete(0, 'end')
+                self.campoAV3.insert(0,str(self.retornoAluno[4]))
+                self.campoAV4.delete(0, 'end')
+                self.campoAV4.insert(0,str(self.retornoAluno[5]))
+                self.labelMotivo = tk.Label(self.master,text="Motivo da alteração: ",fg="red",font="Arial 12")
+                self.labelMotivo.grid(row=8,column=1)
+                self.campoMotivo = tk.Entry(self.master,width=20)
+                self.campoMotivo.grid(row=8,column=2)
+                self.botaoGravarBuscar = tk.Button(self.master,text="Gravar",bg="green",fg="white",font="Arial 14",command=self.executaAlterarAluno)
+                self.botaoGravarBuscar.grid(row=9,column=1,ipadx=2,ipady=2,padx=10,pady=10)
+                self.botaoVoltar = tk.Button(self.master,text="Voltar",font="Arial 14 bold",command=self.executaDesfazTelaAluno)
+                self.botaoVoltar.grid(row=9,column=2,ipadx=2,ipady=2,padx=10,pady=20)
+            else:
+                tk.messagebox.showerror(title="Erro", message="Aluno não encontrado. Refaça sua busca.")
+
     def executaAlterarAluno(self):
         print("executaAlterarAluno")
-        print("AV1 alterada? ",self.retornoAluno[2] != float(self.campoAV1.get()) ,' / ',self.retornoAluno[2] ,' / ', self.campoAV1.get() )
-        print("AV2 alterada? ",self.retornoAluno[3] != float(self.campoAV2.get()) ,' / ',self.retornoAluno[3] ,' / ', self.campoAV2.get() )
-        print("AV3 alterada? ",self.retornoAluno[4] != float(self.campoAV3.get()) ,' / ',self.retornoAluno[4] ,' / ', self.campoAV3.get() )
-        print("AV4 alterada? ",self.retornoAluno[5] != float(self.campoAV4.get()) ,' / ',self.retornoAluno[5] ,' / ', self.campoAV4.get() )
-        if(self.retornoAluno[2] != float(self.campoAV1.get()) or self.retornoAluno[3] != float(self.campoAV2.get()) or self.retornoAluno[4] != float(self.campoAV3.get()) or self.retornoAluno[5] != float(self.campoAV4.get())):
+        print("AV1 alterada? ",float(self.retornoAluno[2]) != float(self.campoAV1.get()) ,' / ',self.retornoAluno[2] ,' / ', self.campoAV1.get() )
+        print("AV2 alterada? ",float(self.retornoAluno[3]) != float(self.campoAV2.get()) ,' / ',self.retornoAluno[3] ,' / ', self.campoAV2.get() )
+        print("AV3 alterada? ",float(self.retornoAluno[4]) != float(self.campoAV3.get()) ,' / ',self.retornoAluno[4] ,' / ', self.campoAV3.get() )
+        print("AV4 alterada? ",float(self.retornoAluno[5]) != float(self.campoAV4.get()) ,' / ',self.retornoAluno[5] ,' / ', self.campoAV4.get() )
+        if(
+            float(self.retornoAluno[2]) != float(self.campoAV1.get()) or
+            float(self.retornoAluno[3]) != float(self.campoAV2.get()) or
+            float(self.retornoAluno[4]) != float(self.campoAV3.get()) or
+            float(self.retornoAluno[5]) != float(self.campoAV4.get()) ):
             print("Houve alteração")
-            # if(len(self.campoMotivo.get()) == 0):
-            #     tk.messagebox.showerror(title="Erro", message="Insira um motivo para a alteração feita e tente novamente.")
-            # else:
-                #  self.retornoAluno = aluno.alterarAluno(self.idUsuario,self.campoMatricula.get(),self.campoAV1.get(),self.campoAV2.get(),self.campoAV3.get(),self.campoAV4.get(), self.campomotivo)
+            if(len(self.campoMotivo.get()) == 0):
+                tk.messagebox.showerror(title="Erro", message="Insira um motivo para a alteração e tente novamente. Nada foi gravado.")
+            else:
+                print("Realizar alteração")
+                self.retornoAluno = aluno.alterarAluno(self.idUsuario,int(self.campoMatricula.get()),float(self.campoAV1.get()),float(self.campoAV2.get()),float(self.campoAV3.get()),self.campoAV4.get(),self.campoMotivo.get())
+                if (self.retornoAluno == -1):
+                    tk.messagebox.showinfo (title="Sucesso", message="Aluno alterado com sucesso.")
+                else:
+                    print("Erro ",self.retornoAluno)
+                    tk.messagebox.showerror(title="Erro", message="Erro ao alterar aluno.")
         else:
             print("Não houve alteração")
             tk.messagebox.showinfo (title="Informação", message="Não houve alteração. Nada a ser gravado.")
@@ -234,6 +248,7 @@ class Principal (tk.Frame):
         print("executaDesfazTelaAluno")
         self.botaoIncluir["state"] = "normal"
         self.botaoBuscar["state"] = "normal"
+        self.botaoListar["state"] = "normal"
         self.labelTituloSecao.destroy()
         self.labelMatricula.destroy()
         self.campoMatricula.destroy()
@@ -247,8 +262,13 @@ class Principal (tk.Frame):
         self.campoAV3.destroy()
         self.labelAV4.destroy()
         self.campoAV4.destroy()
-        self.botaoGravar.destroy()
+        self.botaoGravarBuscar.destroy()
         self.botaoVoltar.destroy()
+        self.labelMotivo.destroy()
+        self.campoMotivo.destroy()
+
+    def telaListarAluno(self):
+        print("telaListarAluno")
 
     def sair(self):
         Principal.quit(self)
