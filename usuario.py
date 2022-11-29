@@ -20,7 +20,6 @@ class Usuario:
             print ("Tabela USUARIO já criada. Exceção: %s" % (e))
             self.conexao.rollback()
 
-
         # CRIAR TABELA ALUNO
         try:     
             criarTabela = 'CREATE TABLE aluno (matricula INT PRIMARY KEY , nome varchar (100) , av1 NUMERIC(4,2) , av2 NUMERIC(4,2) , av3 NUMERIC(4,2) , av4 NUMERIC(4,2))'

@@ -40,7 +40,6 @@ class Principal (tk.Frame):
         self.botaoSair.grid(row=4,column=0,ipadx=20,ipady=20,padx=10,pady=20)
 
     def iniciaLoginUsuario(self):
-        print("iniciaLoginUsuario")
         self.botaoCriarLogin["state"] = "disabled"
         self.botaoEfetuarLogin["state"] = "disabled"
         self.labelTituloSecao = tk.Label(self.master,text="Efetuar login",font="Arial 18")
@@ -74,7 +73,6 @@ class Principal (tk.Frame):
             self.telaMenu()
 
     def iniciaCriarUsuario(self):
-        print("iniciaLoginUsuario")
         self.botaoCriarLogin["state"] = "disabled"
         self.botaoEfetuarLogin["state"] = "disabled"
         self.labelTituloSecao = tk.Label(self.master,text="Novo usuário",font="Arial 18")
@@ -133,7 +131,6 @@ class Principal (tk.Frame):
         self.campoAV4.grid(row=6,column=2,padx=5,pady=5)
 
     def telaIncluirAluno(self):
-        print("telaIncluirAluno")
         self.botaoIncluir["state"] = "disabled"
         self.botaoBuscar["state"] = "disabled"
         self.botaoListar["state"] = "disabled"
@@ -146,7 +143,6 @@ class Principal (tk.Frame):
         self.botaoVoltar.grid(row=7,column=2,ipadx=2,ipady=2,padx=10,pady=20)
 
     def executaIncluirAluno(self):
-        print("executaIncluirAluno")
         self.retornoAluno = aluno.incluirAluno(self.idUsuario,self.campoNome.get(),self.campoMatricula.get(),self.campoAV1.get(),self.campoAV2.get(),self.campoAV3.get(),self.campoAV4.get())
         if (self.retornoAluno == -1):
             tk.messagebox.showinfo (title="Sucesso", message="Aluno incluído com sucesso.")
@@ -157,11 +153,9 @@ class Principal (tk.Frame):
             self.campoAV3.delete(0, 'end')
             self.campoAV4.delete(0, 'end')
         else:
-            print("Erro ",self.retornoAluno)
             tk.messagebox.showerror(title="Erro", message="Erro ao incluir aluno.")
 
     def telaBuscarAluno(self):
-        print("telaBuscarAluno")
         self.botaoIncluir["state"] = "disabled"
         self.botaoBuscar["state"] = "disabled"
         self.botaoListar["state"] = "disabled"
@@ -180,7 +174,6 @@ class Principal (tk.Frame):
         self.botaoGravarBuscar.grid(row=7,column=1,ipadx=2,ipady=2,padx=10,pady=10)
 
     def executaBuscarAluno(self):
-        print("executaBuscarAluno")
         self.termo = self.campoTermo.get()
         if(len(self.termo) == 0):
             tk.messagebox.showerror(title="Erro", message="Digite algum termo para buscar.")
@@ -220,11 +213,6 @@ class Principal (tk.Frame):
                 tk.messagebox.showerror(title="Erro", message="Aluno não encontrado. Refaça sua busca.")
 
     def executaAlterarAluno(self):
-        print("executaAlterarAluno")
-        print("AV1 alterada? ",float(self.retornoAluno[2]) != float(self.campoAV1.get()) ,' / ',self.retornoAluno[2] ,' / ', self.campoAV1.get() )
-        print("AV2 alterada? ",float(self.retornoAluno[3]) != float(self.campoAV2.get()) ,' / ',self.retornoAluno[3] ,' / ', self.campoAV2.get() )
-        print("AV3 alterada? ",float(self.retornoAluno[4]) != float(self.campoAV3.get()) ,' / ',self.retornoAluno[4] ,' / ', self.campoAV3.get() )
-        print("AV4 alterada? ",float(self.retornoAluno[5]) != float(self.campoAV4.get()) ,' / ',self.retornoAluno[5] ,' / ', self.campoAV4.get() )
         if(
             float(self.retornoAluno[2]) != float(self.campoAV1.get()) or
             float(self.retornoAluno[3]) != float(self.campoAV2.get()) or
@@ -242,10 +230,9 @@ class Principal (tk.Frame):
                     print("Erro ",self.retornoAluno)
                     tk.messagebox.showerror(title="Erro", message="Erro ao alterar aluno.")
         else:
-            print("Não houve alteração")
             tk.messagebox.showinfo (title="Informação", message="Não houve alteração. Nada a ser gravado.")
+
     def executaDesfazTelaAluno(self):
-        print("executaDesfazTelaAluno")
         self.botaoIncluir["state"] = "normal"
         self.botaoBuscar["state"] = "normal"
         self.botaoListar["state"] = "normal"
@@ -269,10 +256,13 @@ class Principal (tk.Frame):
 
     def telaListarAluno(self):
         print("telaListarAluno")
+        
+
 
     def sair(self):
         Principal.quit(self)
         print("Aplicativo encerrado.")
+
 idUsuario = None
 retornoAluno = None
 usuario = Usuario()

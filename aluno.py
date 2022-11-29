@@ -13,9 +13,7 @@ class Aluno:
                 buscaAluno = "SELECT matricula,nome,av1,av2,av3,av4 FROM aluno WHERE nome LIKE '%" + str(termo) + "%' limit 1"
             self.cursor.execute (buscaAluno)
             resultado = self.cursor.fetchone()
-            print(resultado)
         except Exception as e:
-            print ("Erro na busca. Exceção: %s" % (e))
             self.conexao.rollback()
             resultado = 1
         return resultado
@@ -26,11 +24,9 @@ class Aluno:
             salvaNota = "INSERT INTO aluno (matricula,nome,av1,av2,av3,av4) VALUES (%s,%s,%s,%s,%s,%s)"
             self.cursor.execute (salvaNota,(matricula,nome,av1,av2,av3,av4))
             self.conexao.commit()
-            print(f"Aluno {nome} inserido.")
             self.gravaLog(matricula,idUsuario,"Inclusão de aluno")
             return -1
         except Exception as e:
-            print ("Erro na inclusão. Exceção: %s" % (e))
             self.conexao.rollback()
             return 1
 
@@ -39,11 +35,9 @@ class Aluno:
             atualizaNota = "UPDATE aluno SET av1 = %s, av2 = %s, av3 = %s, av4 = %s WHERE matricula = %s"
             self.cursor.execute (atualizaNota,(av1,av2,av3,av4,matricula))
             self.conexao.commit()
-            print("Nota(s) alterada(s).")
             self.gravaLog(matricula,idUsuario,motivo)
             return -1
         except Exception as e:
-            print ("Erro na alteração. Exceção: %s" % (e))
             self.conexao.rollback()
             return 1
 
@@ -52,7 +46,15 @@ class Aluno:
             novolog= "INSERT INTO log (matricula,login,motivo) VALUES (%s,%s,%s)"
             self.cursor.execute (novolog,(matricula,idUsuario,motivo))
             self.conexao.commit()
-            print("Ação gravada no Log.")
         except Exception as e:
-            print ("Erro na gravação do log. Exceção: %s" % (e))
             self.conexao.rollback()
+
+    def listarAluno(self):
+        try:
+            listaAluno = "SELECT matricula,nome,av1,av2,av3,av4 FROM aluno"
+            self.cursor.execute (listaAluno)
+            resultado = self.cursor.fetchall()
+        except Exception as e:
+            self.conexao.rollback()
+            resultado = 1
+        return resultado
