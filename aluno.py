@@ -13,7 +13,7 @@ class Aluno:
                 buscaAluno = "SELECT matricula,nome,av1,av2,av3,av4 FROM aluno WHERE nome LIKE '%" + str(termo) + "%' limit 1"
             self.cursor.execute (buscaAluno)
             resultado = self.cursor.fetchone()
-        except Exception as e:
+        except:
             self.conexao.rollback()
             resultado = 1
         return resultado
@@ -26,7 +26,7 @@ class Aluno:
             self.conexao.commit()
             self.gravaLog(matricula,idUsuario,"Inclusão de aluno")
             return -1
-        except Exception as e:
+        except:
             self.conexao.rollback()
             return 1
 
@@ -37,7 +37,7 @@ class Aluno:
             self.conexao.commit()
             self.gravaLog(matricula,idUsuario,motivo)
             return -1
-        except Exception as e:
+        except:
             self.conexao.rollback()
             return 1
 
@@ -46,15 +46,15 @@ class Aluno:
             novolog= "INSERT INTO log (matricula,login,motivo) VALUES (%s,%s,%s)"
             self.cursor.execute (novolog,(matricula,idUsuario,motivo))
             self.conexao.commit()
-        except Exception as e:
+        except:
             self.conexao.rollback()
 
     def listarAluno(self):
         try:
-            listaAluno = "SELECT matricula,nome,av1,av2,av3,av4 FROM aluno"
+            listaAluno = "SELECT matricula,nome,CAST((av1+av2+av3+av4)/4 AS NUMERIC(4,2)) AS media , CASE WHEN (av1+av2+av3+av4)/4 >= 6 THEN 'APROVADO' WHEN (av1+av2+av3+av4)/4 >= 4 THEN 'EXAME' ELSE 'REPROVADO' END AS flagAprovado FROM aluno"
             self.cursor.execute (listaAluno)
             resultado = self.cursor.fetchall()
-        except Exception as e:
+        except:
             self.conexao.rollback()
             resultado = 1
         return resultado

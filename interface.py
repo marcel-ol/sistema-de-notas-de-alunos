@@ -7,7 +7,7 @@ from aluno import *
 class Principal (tk.Frame):
     def __init__(self):
         self.telaLogin()
-        self.master.geometry("600x700")
+        self.master.geometry("650x700")
         self.master.title("Controle de alunos e notas")
         self.radioMatricula = tk.Radiobutton()
         self.radioNome = tk.Radiobutton()
@@ -15,6 +15,7 @@ class Principal (tk.Frame):
         self.labelMotivo = tk.Label()
         self.campoMotivo = tk.Entry()
         self.escolha = tk.IntVar()
+        self.campoListaAlunos = tk.Text()
 
     def telaLogin(self):
         tk.Frame.__init__(self)
@@ -255,11 +256,33 @@ class Principal (tk.Frame):
         self.campoMotivo.destroy()
 
     def telaListarAluno(self):
-        print("telaListarAluno")
-        
+        self.retornoAluno = aluno.listarAluno()
+        if(self.retornoAluno == 0):
+            tk.messagebox.showerror(title="Erro", message="Não há alunos para listar.")
+            return 0
+        self.botaoIncluir["state"] = "disabled"
+        self.botaoBuscar["state"] = "disabled"
+        self.botaoListar["state"] = "disabled"
+        self.labelTituloSecao = tk.Label(self.master,text="Listar alunos",font="Arial 18")
+        self.labelTituloSecao.grid(row=0,column=1,padx=5,pady=5)
+        self.campoListaAlunos = tk.Text(self.master, width=60, height=len(self.retornoAluno)+1)
+        self.campoListaAlunos.grid(row=2,column=1)
+        for self.linha in self.retornoAluno:
+            self.novaLinha = str(self.linha[0]) + '\t' + str(self.linha[1]) + '\t' + str(self.linha[2]) + '\t' + str(self.linha[3]) + '\n'
+            self.campoListaAlunos.insert('end',self.novaLinha)
+        self.botaoVoltar = tk.Button(self.master,text="Voltar",font="Arial 14 bold",command=self.executaDesfazTelaListar)
+        self.botaoVoltar.grid(row=10,column=1,ipadx=2,ipady=2,padx=10,pady=20)
 
+    def executaDesfazTelaListar(self):
+        self.botaoIncluir["state"] = "normal"
+        self.botaoBuscar["state"] = "normal"
+        self.botaoListar["state"] = "normal"
+        self.labelTituloSecao.destroy()
+        self.campoListaAlunos.destroy()
+        self.botaoVoltar.destroy()
 
     def sair(self):
+        tk.messagebox.showinfo(title="Tchau!", message="Criado por Luiz Gabriel Garcia e Marcel Luiz Michalovsky Oliveira.")
         Principal.quit(self)
         print("Aplicativo encerrado.")
 
